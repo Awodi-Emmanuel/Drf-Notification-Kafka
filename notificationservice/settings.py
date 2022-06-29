@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -76,11 +76,97 @@ WSGI_APPLICATION = 'notificationservice.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        'NAME': 'notifiservice',
+        'USER': 'notifi',
+        'PASSWORD': 'Notifi123_',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
+LOGS_DIR = os.path.join(BASE_DIR, "logs")
+try:
+    os.mkdir(LOGS_DIR)
+except:
+    pass
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "standard": {
+            "format": "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s - %(pathname)s",
+            "datefmt": "%d/%b/%Y %H:%M:%S",
+        }
+    },
+    "handlers": {
+        "default": {
+            "level": "DEBUG",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(LOGS_DIR, "default.log"),
+            "formatter": "standard",
+        },
+        "handler_error": {
+            "level": "ERROR",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(LOGS_DIR, "error.log"),
+            "formatter": "standard",
+        },
+        "console": {"class": "logging.StreamHandler", "formatter": "standard"},
+        "celery": {
+            "level": "DEBUG",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(LOGS_DIR, "celery.log"),
+            "formatter": "standard",
+        },
+    },
+    "loggers": {
+        "django": {"handlers": ["handler_error"], "level": "ERROR", "propagate": True},
+        "": {"handlers": ["default", "console"], "level": "DEBUG", "propagate": True},
+        "celery": {
+            "handlers": ["celery", "console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+    },
+}
+
+
+SMTP = {
+    "host": "smtp.migadu.com",
+    "port": 465,
+    "use_tls": False,
+    "use_ssl": True,
+    "accounts": {
+        "noreply": {
+            "from": "Edubase Noreply <noreply@growthcapital.ng>",
+            "username": "noreply@growthcapital.ng",
+            "password": "GrowWithGC123_",
+        },
+        "account": {
+            "from": "Edubase Account <noreply@growthcapital.ng>",
+            "username": "noreply@growthcapital.ng",
+            "password": "GrowWithGC123_",
+        },
+        "alerts": {
+            "from": "Edubase Alerts <noreply@growthcapital.ng>",
+            "username": "noreply@growthcapital.ng",
+            "password": "GrowWithGC123_",
+        },
+        "receipt": {
+            "from": "Edubase Receipt <noreply@growthcapital.ng>",
+            "username": "devcave@swedishasongroup.se",
+            "password": "GrowWithGC123_",
+        },
+        "support": {
+            "from": "Edubase Support <noreply@growthcapital.ng>",
+            "username": "noreply@growthcapital.ng",
+            "password": "GrowWithGC123_",
+        },
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
