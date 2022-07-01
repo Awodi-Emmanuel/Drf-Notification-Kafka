@@ -141,29 +141,29 @@ SMTP = {
     "use_ssl": True,
     "accounts": {
         "noreply": {
-            "from": "Edubase Noreply <noreply@growthcapital.ng>",
+            "from": "Sellanithing Noreply <noreply@sellanithing.com>",
             "username": "noreply@growthcapital.ng",
             "password": "GrowWithGC123_",
         },
         "account": {
-            "from": "Edubase Account <noreply@growthcapital.ng>",
-            "username": "noreply@growthcapital.ng",
-            "password": "GrowWithGC123_",
+            "from": "Sellanithing Account <noreply@sellanithing.com>",
+            "username": "noreply@sellanithing.com",
+            "password": "Sellanithing123_",
         },
         "alerts": {
-            "from": "Edubase Alerts <noreply@growthcapital.ng>",
-            "username": "noreply@growthcapital.ng",
-            "password": "GrowWithGC123_",
+            "from": "Sellanithing Alerts <noreply@sellanithing.com>",
+            "username": "noreply@sellanithing.com",
+            "password": "Sellanithing_",
         },
         "receipt": {
-            "from": "Edubase Receipt <noreply@growthcapital.ng>",
+            "from": "Sellanithing Receipt <noreply@sellanithing.com>",
             "username": "devcave@swedishasongroup.se",
-            "password": "GrowWithGC123_",
+            "password": "Sellanithing123_",
         },
         "support": {
-            "from": "Edubase Support <noreply@growthcapital.ng>",
-            "username": "noreply@growthcapital.ng",
-            "password": "GrowWithGC123_",
+            "from": "Sellanithing Support <noreply@sellanithing.com>",
+            "username": "noreply@sellanithing.com",
+            "password": "Sellanithing123_",
         },
     },
 }

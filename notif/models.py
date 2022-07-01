@@ -1,3 +1,4 @@
+from email.policy import default
 from pyexpat import model
 from django.db import models
 from django.contrib.auth import get_user_model
@@ -7,14 +8,13 @@ from django.db.models import JSONField
 User = get_user_model()
 
 class Notification(models.Model):
-    MODE_CLIENT ="client"
-    MODE_SHOP = "shop",
+    MODE_CLIENT = "client"
+    MODE_SHOP = "shop"
     MODE_ADMIN = "admin"
-    
     MODES = [
         (MODE_CLIENT, MODE_CLIENT),
         (MODE_SHOP, MODE_SHOP),
-        (MODE_ADMIN, MODE_ADMIN)
+        (MODE_ADMIN, MODE_ADMIN),
     ]
 
     user: models.ForeignKey = models.ForeignKey(
@@ -26,9 +26,12 @@ class Notification(models.Model):
     link: models.CharField = models.CharField(_("The link associated"), max_length=255)
     image: models.ImageField = models.ImageField(upload_to="notifications")
     actions: JSONField = JSONField(default=dict)
+    data: JSONField = JSONField(default=dict)
     read: models.DateTimeField = models.DateTimeField(null=True, blank=True)
     sent: models.DateTimeField = models.DateTimeField(auto_now_add=True)
-    mode: models.CharField = models.CharField(max_length=10, default=MODE_CLIENT, choices=MODES)
+    mode: models.CharField = models.CharField(
+        max_length=10, default=MODE_CLIENT, choices=MODES
+    )
 
     def __str__(self):
         if self.user and self.user.name:
