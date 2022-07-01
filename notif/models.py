@@ -42,3 +42,30 @@ class Notification(models.Model):
         return super().save(*args, **kwargs) 
     
     
+class NotificationsRequest(models.Model):
+    {
+        "req_id": "halkjhdflkjfdlkjhg",
+        "stream_id": "hkajdfhjgkhgjhk",
+        "message": {
+            "subject": "Reset Password",
+            "email": "traze@gmail.com",
+            "reset_url": "https://sellanithing.com/reset/?token=MTIzNDU=&email=dHJhemVAZ21haWwuY29t",
+            "username": "Awodi"
+            
+        },
+        "notification_type": "reset_init",
+        "channel": "sms"
+    }              
+    
+    request_id: models.CharField = models.CharField(max_length=50, null=False, blank=False)
+    stream_id: models.CharField = models.CharField(max_length=50, null=False, blank=False)
+    message: JSONField = JSONField(default=dict)
+    destination: models.CharField = models.CharField(max_length=200, null=False, blank=False)
+    source_service: models.CharField = models.CharField(max_length=50, null=False, blank=False)
+    notification_type: models.CharField = models.CharField(max_length=50, null=False, blank=False)
+    channel: models.CharField = models.CharField(max_length=50, null=False, blank=False)
+    created_at: models.DateTimeField = models.DateTimeField(auto_now_add=True)
+    updated_at: models.DateField = models.DateField(auto_now=True)
+    
+    def save(self, *args, **kwargs):
+        return super().save(*args, **kwargs)
