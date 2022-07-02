@@ -1,36 +1,24 @@
-from ast import Try
-from notif import notifier
-from notif.models import NotificationsRequest
+from ensurepip import bootstrap
+import enum 
+from kafka import kafkaConsumer
+import json
+import consumer.proccessor as proccess
 
-def send_notification(data: dict):
-    
-    {
-        "req_id": "halkjhdflkjfdlkjhg",
-        "stream_id": "hkajdfhjgkhgjhk",
-        "message": {
-            "subject": "Restet Password",
-            "email": "traze@gmail.com",
-            "reset_url": "https://sellanithing.com/reset/?token=MTIzNDU=&email=dHJhemVAZ21haWwuY29t",
-            "username": "Awodi"
-        },
-        "notification_type": "reset_init",
-        "channel": "sms"
-        
-    }
-    
-    vias = data["channel"]
-    subject = data['message']['subject']
-    receiver = data['message']['email'] if vias == 'email' else data['message']['phone']
-    notification_type = data['notification_type']
-    context = data['message']
-    
-    notifier.notify(vias=[vias],
-                    subject=subject,
-                    receivers=[receiver],
-                    template=notification_type,
-                    context=context,
-                    smtp_account="account",
-                    thread=True
-                    )
+BOOTSTRAP_SERVERS = ['localhost:9092']
+
+class ActionType(enum.Enum):
+    notification = "notification"
+    default = "notification"
     
     
+def register_kafka_listener(topic, listener):
+    # poll kafka 
+    def poll():
+        # Initialize consumer instance
+        consumer = kafkaConsumer(topic, bootstrap_servers=BOOTSTRAP_SERVERS)
+        for msg in consumer:
+            # print("Enter the loop/nkey: ", msg.key, "Value:", msg.value)
+            kafka_listener(msg)
+    poll()
+    
+                    
