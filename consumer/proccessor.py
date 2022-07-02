@@ -33,4 +33,27 @@ def send_notification(data: dict):
                     thread=True
                     )
     
+def log_notification(data: dict) -> bool:
     
+    request_id = data['req_id']
+    stream_id = data["stream_id"]
+    message = data['message']
+    destination = data['message']['email'] if data['channel'] == 'email' else data['message']['phone']
+    source_service = data['source']
+    notification_type = data['notification_type']
+    channel = data['channel']
+    
+    try:
+        NotificationsRequest.objects.create(
+            request_id=request_id,
+            stream_id=stream_id,
+            message=message,
+            destination=destination,
+            source_service=source_service,
+            notification_type=notification_type,
+            channel=channel
+            
+        ) 
+        return True   
+    except Exception as e:
+        return False
