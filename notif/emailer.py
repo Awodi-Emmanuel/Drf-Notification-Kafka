@@ -6,7 +6,7 @@ from threading import Thread
 from django.conf import settings
 import traceback
 import re
-import unidecode 
+# import unidecode 
 import logging 
 from django.utils.translation import gettext as _ 
 from django.utils.translation import activate
@@ -39,6 +39,49 @@ class Emailer:
             use_tls=smtp_use_tls,
             use_ssl=smtp_use_ssl
         )
-        
+        self.subject: str = subject
+        self.receivers: list = receivers
+        self.template: str = template
+        self.context: dict = context
+        self.threaded: bool = kwargs.get("threaded", False)
         
     def send(self):
+        if self.threaded:
+            t = Thread(target=self._send)
+            t.setDaemon(True)
+            t.start()
+    
+    def _send(self):
+        try:
+            logger.info(f"sending emails to {self.receivers}")
+            for user in self.receivers:
+                ctx = self.context.copy()
+                ctx['user'] = user
+                logger.info(f"===== user name {user}")
+                logger.info(ctx)
+                
+                html_content = render_to_string(
+                    "{}/email.html".format(self.template), ctx
+                ) # render with dynamic value
+                logger.info(html_content)
+                
+                text_content = render_to_string(
+                    "{}/email.txt".format(self.template), ctx
+                ) # render with dynamic value
+                logger.info(text_content)
+                
+                msg = EmailMultiAlternatives(
+                    self.subject,
+                    text_content,
+                    self.smtp_from,
+                    [user],
+                    connection=self.connection,
+                )
+                
+                msg.attach_alternative(html_content, "text/html")
+                msg.send()
+        except:
+            logger.error(traceback.format_exc())
+            
+if __name__ == "__main__":
+    emailer = Emailer("Reset code", ["jefcolbi@gmail.com"], "reset", {}, "account")
