@@ -1,4 +1,4 @@
-from notif.emailer import emailer
+from notif.emailer import Emailer
 from notif.smsers import ExternalSMS
 from notif.pusher  import Pusher
 import logging
@@ -43,4 +43,4 @@ def nofify(
                 logger.error(f"Unkown sending method {via}")
         except:
             logger.error(traceback.format_exc())
-             
+              
