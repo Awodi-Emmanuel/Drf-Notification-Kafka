@@ -32,4 +32,4 @@ def kafka_listener(data):
         #TODO: Notify system of Logger error
         print("unable to log and notify user")   
            
-register_kafka_listener(ActionType.notification.value, kafka_listener)           
+register_kafka_listener(ActionType.notification.value, kafka_listenerw)           

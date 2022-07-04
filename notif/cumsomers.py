@@ -1,8 +1,8 @@
 import json 
-from channels.generic.websockect import WebsocketConsumer
+from channels.generic.websockets import WebsocketConsumer
 import logging
 import traceback 
-from ctypes
+import ctypes
 from pathlib import Path
 import binascii
 from django.core.exceptions import ObjectDoesNotExist
