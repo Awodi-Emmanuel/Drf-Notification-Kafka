@@ -1,4 +1,3 @@
-from django.dispatch import receiver
 from notif.cgsms_client import CGSmsClient
 from threading import Thread
 from django.template.loader import render_to_string
